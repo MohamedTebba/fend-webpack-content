@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const HTMLWebpackPlugin = require('html-webpack-plugin')
 
 
 /**
@@ -9,6 +10,32 @@ Webpack is going to make a map of our app assets and all of their dependencies, 
 
 ’./src/client/index.js’
  */
+
+
+/**babel command line:
+  * 
+  * npm i -D @babel/core @babel/preset-env babel-loader
+  */
+
+/**
+ * Loaders transform files type to what webpack would understand, plugins do what else loaders can't do
+ *  */  
 module.exports = {
-    entry : './src/client/index.js'
+    entry : './src/client/index.js',
+    module: {
+        rules: [
+            //first rule goes here, test all js files expect those exist in node_modules, with a loader "babel-loader"
+            {
+                test: '/\.js$/',
+                exclude: /node_modules/,
+                loader: "babel-loader"
+            }
+        ]
+    },
+    plugins: [
+        new HTMLWebpackPlugin({
+            template: "./src/client/views/index.html",
+            filename: "./index.html"
+        })
+    ]
 }
